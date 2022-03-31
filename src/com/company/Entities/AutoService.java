@@ -1,13 +1,11 @@
 package com.company.Entities;
 
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Vector;
 
 public class AutoService implements Comparable<AutoService> {
     String address;
     String name;
-    Vector<Angajat> employees;
+    Vector<Employee> employees;
     Vector<Workspace> workspaces;
 
     public String getAddress() {
@@ -26,11 +24,11 @@ public class AutoService implements Comparable<AutoService> {
         this.name = name;
     }
 
-    public Vector<Angajat> getEmployees() {
+    public Vector<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Vector<Angajat> employees) {
+    public void setEmployees(Vector<Employee> employees) {
         this.employees = employees;
     }
 
@@ -42,7 +40,7 @@ public class AutoService implements Comparable<AutoService> {
         this.workspaces = workspaces;
     }
 
-    public AutoService(String address, String name, Vector<Angajat> employees, Vector<Workspace> workspaces) {
+    public AutoService(String address, String name, Vector<Employee> employees, Vector<Workspace> workspaces) {
         this.address = address;
         this.name = name;
         this.employees = employees;

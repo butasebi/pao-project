@@ -1,6 +1,6 @@
 package com.company.Entities;
 
-public class Mecanic extends Angajat{
+public class Mecanic extends Employee {
 
     public String getSpecialization() {
         return specialization;

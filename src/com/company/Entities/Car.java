@@ -3,7 +3,7 @@ package com.company.Entities;
 public class Car {
     String brand;
     String model;
-    String car_plate;
+    String carPlate;
 
     public String getBrand() {
         return brand;
@@ -21,20 +21,20 @@ public class Car {
         this.model = model;
     }
 
-    public String getCar_plate() {
-        return car_plate;
+    public String getCarPlate() {
+        return carPlate;
     }
 
-    public void setCar_plate(String car_plate) {
-        this.car_plate = car_plate;
+    public void setCarPlate(String carPlate) {
+        this.carPlate = carPlate;
     }
 
     public Car() {
     }
 
-    public Car(String brand, String model, String car_plate) {
+    public Car(String brand, String model, String carPlate) {
         this.brand = brand;
         this.model = model;
-        this.car_plate = car_plate;
+        this.carPlate = carPlate;
     }
 }

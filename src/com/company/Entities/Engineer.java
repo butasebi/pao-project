@@ -1,6 +1,6 @@
 package com.company.Entities;
 
-public class Engineer extends Angajat{
+public class Engineer extends Employee {
 
     String university;
     String specialization;
@@ -24,8 +24,8 @@ public class Engineer extends Angajat{
         this.specialization = specialization;
     }
 
-    public Engineer(String firstname, String lastname, String nr_tel, int salary, String university, String specialization) {
-        super(firstname, lastname, nr_tel, salary);
+    public Engineer(String firstName, String lastName, String nrTel, int salary, String university, String specialization) {
+        super(firstName, lastName, nrTel, salary);
         this.university = university;
         this.specialization = specialization;
     }

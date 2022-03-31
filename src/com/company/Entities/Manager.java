@@ -1,6 +1,6 @@
 package com.company.Entities;
 
-public class Manager extends Angajat{
+public class Manager extends Employee {
 
     Boolean founder;
 

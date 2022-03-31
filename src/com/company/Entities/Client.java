@@ -1,24 +1,31 @@
 package com.company.Entities;
 
-public class Client {
-    String firstname;
-    String lastname;
+public class Client implements Comparable<Client>{
+    String firstName;
+    String lastName;
     Car car;
 
-    public String getFirstname() {
-        return firstname;
+    @Override
+    public int compareTo(Client o) {
+        if(this.firstName.equals(firstName))
+            return this.lastName.compareTo(lastName);
+        return this.firstName.compareTo(firstName);
     }
 
-    public void setFirstname(String firstname) {
-        this.firstname = firstname;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public String getLastname() {
-        return lastname;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public void setLastname(String lastname) {
-        this.lastname = lastname;
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public Car getCar() {
@@ -32,9 +39,9 @@ public class Client {
     public Client() {
     }
 
-    public Client(String firstname, String lastname, Car car) {
-        this.firstname = firstname;
-        this.lastname = lastname;
+    public Client(String firstName, String lastName, Car car) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.car = car;
     }
 }
