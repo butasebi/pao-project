@@ -21,6 +21,7 @@ public class Main {
             {
                 System.out.println("Press 1 to replace the autoservices database!");
                 System.out.println("Press 2 to print the autoservices database details!");
+                System.out.println("Press 3 to add an autoservice in the autoservices database!");
             }
             System.out.println("Press 10 to quit!");
 
@@ -32,6 +33,10 @@ public class Main {
             if(op == 2)
             {
                 System.out.println(database.toString());
+            }
+            if(op == 3)
+            {
+                database.AddServiceAuto();
             }
             if(op == 10)
             {
