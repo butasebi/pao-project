@@ -1,9 +1,18 @@
-package com.company.Entities;
+package com.company.entities;
 
 public class Client implements Comparable<Client>{
-    String firstName;
-    String lastName;
-    Car car;
+    private String firstName;
+    private String lastName;
+    private Car car;
+
+    public Client() {
+    }
+
+    public Client(String firstName, String lastName, Car car) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.car = car;
+    }
 
     @Override
     public int compareTo(Client o) {
@@ -33,15 +42,6 @@ public class Client implements Comparable<Client>{
     }
 
     public void setCar(Car car) {
-        this.car = car;
-    }
-
-    public Client() {
-    }
-
-    public Client(String firstName, String lastName, Car car) {
-        this.firstName = firstName;
-        this.lastName = lastName;
         this.car = car;
     }
 }

@@ -1,9 +1,18 @@
-package com.company.Entities;
+package com.company.entities;
 
 public class Car {
-    String brand;
-    String model;
-    String carPlate;
+    private String brand;
+    private String model;
+    private String carPlate;
+
+    public Car() {
+    }
+
+    public Car(String brand, String model, String carPlate) {
+        this.brand = brand;
+        this.model = model;
+        this.carPlate = carPlate;
+    }
 
     public String getBrand() {
         return brand;
@@ -26,15 +35,6 @@ public class Car {
     }
 
     public void setCarPlate(String carPlate) {
-        this.carPlate = carPlate;
-    }
-
-    public Car() {
-    }
-
-    public Car(String brand, String model, String carPlate) {
-        this.brand = brand;
-        this.model = model;
         this.carPlate = carPlate;
     }
 }

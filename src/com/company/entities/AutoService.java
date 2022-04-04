@@ -1,12 +1,19 @@
-package com.company.Entities;
+package com.company.entities;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class AutoService implements Comparable<AutoService> {
-    String address;
-    String name;
-    Vector<Employee> employees;
-    Vector<Workspace> workspaces;
+    private String address;
+    private String name;
+    private ArrayList employees;
+    private ArrayList workspaces;
+
+    public AutoService(String address, String name, ArrayList employees, ArrayList workspaces) {
+        this.address = address;
+        this.name = name;
+        this.employees = employees;
+        this.workspaces = workspaces;
+    }
 
     public String getAddress() {
         return address;
@@ -24,26 +31,19 @@ public class AutoService implements Comparable<AutoService> {
         this.name = name;
     }
 
-    public Vector<Employee> getEmployees() {
+    public ArrayList<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(Vector<Employee> employees) {
+    public void setEmployees(ArrayList employees) {
         this.employees = employees;
     }
 
-    public Vector<Workspace> getWorkspaces() {
+    public ArrayList getWorkspaces() {
         return workspaces;
     }
 
-    public void setWorkspaces(Vector<Workspace> workspaces) {
-        this.workspaces = workspaces;
-    }
-
-    public AutoService(String address, String name, Vector<Employee> employees, Vector<Workspace> workspaces) {
-        this.address = address;
-        this.name = name;
-        this.employees = employees;
+    public void setWorkspaces(ArrayList workspaces) {
         this.workspaces = workspaces;
     }
 

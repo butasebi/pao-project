@@ -1,10 +1,10 @@
-package com.company.Entities;
+package com.company.entities;
 
 public class Elevator extends Workspace{
 
-    int maxHeight;
-    int length;
-    int width;
+    private int maxHeight;
+    private int length;
+    private int width;
 
     public Elevator() {
     }

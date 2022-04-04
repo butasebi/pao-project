@@ -1,31 +1,31 @@
-package com.company.Services;
+package com.company.services;
 
-import com.company.Entities.AutoService;
-import com.company.Entities.Client;
+import com.company.entities.Client;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Vector;
 
 public class ServiceClients {
-    static ServiceClients singleton = null;
-    Vector<Client> clients;
+    private static ServiceClients singleton = null;
+    private ArrayList clients;
 
-    private ServiceClients(Vector<Client> clients) {
+
+    private ServiceClients(ArrayList<Client> clients) {
         this.clients = clients;
     }
 
-    public static ServiceClients getInstance(Vector<Client> clients)
+    public static ServiceClients getInstance(ArrayList<Client> clients)
     {
         if(singleton == null)
             singleton = new ServiceClients(clients);
         return singleton;
     }
 
-    public Vector<Client> getClients() {
+    public ArrayList<Client> getClients() {
         return clients;
     }
 
-    public void setClients(Vector<Client> clients) {
+    public void setClients(ArrayList<Client> clients) {
         this.clients = clients;
     }
 
@@ -44,8 +44,10 @@ public class ServiceClients {
     @Override
     public String toString() {
         String mesaj = "The list of services is made of:";
-        for(Client client : this.clients)
+        for(Object o : this.clients) {
+            Client client = (Client) o;
             mesaj += "  " + client.getFirstName() + "\n";
+        }
         return mesaj;
     }
 

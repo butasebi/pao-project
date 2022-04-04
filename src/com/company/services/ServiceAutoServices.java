@@ -1,31 +1,24 @@
-package com.company.Services;
+package com.company.services;
 
-import com.company.Entities.*;
+import com.company.entities.*;
 
+import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Vector;
 
-import static com.company.Entities.Reader.cinInt;
-import static com.company.Entities.Reader.cinString;
+import static com.company.services.Reader.cinInt;
+import static com.company.services.Reader.cinString;
 
 public class ServiceAutoServices {
-    static ServiceAutoServices singleton = null;
-    static String status = "Not created";
-    Vector<AutoService> services;
+    private static ServiceAutoServices singleton = null;
+    private static String status = "Not created";
+    private ArrayList services;
 
-    public Vector<AutoService> getServices() {
-        return services;
-    }
-
-    public void setServices(Vector<AutoService> services) {
+    private ServiceAutoServices(ArrayList<AutoService> services) {
         this.services = services;
     }
 
-    public static String getStatus() {
-        return status;
-    }
-
-    public static ServiceAutoServices getInstance(Vector<AutoService> services)
+    //Singleton object getter
+    public static ServiceAutoServices getInstance(ArrayList<AutoService> services)
     {
         status = "Created";
         if(singleton == null)
@@ -33,9 +26,18 @@ public class ServiceAutoServices {
         return singleton;
     }
 
-    private ServiceAutoServices(Vector<AutoService> services) {
+    public ArrayList<AutoService> getServices() {
+        return services;
+    }
+
+    public void setServices(ArrayList<AutoService> services) {
         this.services = services;
     }
+
+    public static String getStatus() {
+        return status;
+    }
+
 
     //Create
     public void AddAutoService(AutoService service)
@@ -47,10 +49,11 @@ public class ServiceAutoServices {
     @Override
     public String toString() {
         String mesaj = "The list of services is made of:";
-        for(AutoService service : this.services) {
+        for (Object o : this.services) {
+            AutoService service = (AutoService) o;
             mesaj += "  " + service.getName() + "\n";
             mesaj += "  The employees of " + service.getName() + " are:\n";
-            for(Employee employee : service.getEmployees())
+            for (Employee employee : service.getEmployees())
                 mesaj += "      " + employee.getFirstName() + " " + employee.getLastName() + "\n";
         }
         return mesaj;
@@ -69,14 +72,14 @@ public class ServiceAutoServices {
         this.services.remove(service);
     }
 
-    public void sortAutoServicesAlphabetically()
+    public void SortListOfAutoServices()
     {
         Collections.sort(services);
     }
 
-    public static Vector<AutoService> readAutoServices()
+    public static ArrayList<AutoService> readAutoServices()
     {
-        Vector<AutoService> auxVec = new Vector<AutoService> ();
+        ArrayList<AutoService> auxVec = new ArrayList<AutoService> ();
         System.out.println("Introduce the number of autoservices the database will have:");
 
         int nrAutoServices = cinInt();
@@ -94,7 +97,7 @@ public class ServiceAutoServices {
             System.out.println("Introduce how many employees will " + name + " have:");
 
             nrEmployees = cinInt();
-            Vector <Employee> listEmp = new Vector <Employee>();
+            ArrayList <Employee> listEmp = new ArrayList <Employee>();
             for(int j = 1; j <= nrEmployees; j ++)
             {
                 String firstName;
@@ -163,7 +166,7 @@ public class ServiceAutoServices {
 
             System.out.println("Introduce how many workspaces will " + name + " have:");
             nrWorkspaces = cinInt();
-            Vector <Workspace> listWorkspaces = new Vector <Workspace>();
+            ArrayList <Workspace> listWorkspaces = new ArrayList <Workspace>();
             for(int j = 1; j <= nrWorkspaces; j ++)
             {
                 String type;
@@ -240,7 +243,7 @@ public class ServiceAutoServices {
         System.out.println("Introduce how many employees will " + name + " have:");
 
         nrEmployees = cinInt();
-        Vector <Employee> listEmp = new Vector <Employee>();
+        ArrayList <Employee> listEmp = new ArrayList <Employee>();
         for(int j = 1; j <= nrEmployees; j ++)
         {
             String firstName;
@@ -304,7 +307,7 @@ public class ServiceAutoServices {
 
         System.out.println("Introduce how many workspaces will " + name + " have:");
         nrWorkspaces = cinInt();
-        Vector <Workspace> listWorkspaces = new Vector <Workspace>();
+        ArrayList <Workspace> listWorkspaces = new ArrayList <Workspace>();
         for(int j = 1; j <= nrWorkspaces; j ++)
         {
             String type;

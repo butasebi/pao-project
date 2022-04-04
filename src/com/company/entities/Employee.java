@@ -1,11 +1,11 @@
-package com.company.Entities;
+package com.company.entities;
 
 public abstract class Employee {
 
-    String firstName;
-    String lastName;
-    String nrTel;
-    int salary;
+    private String firstName;
+    private String lastName;
+    private String nrTel;
+    private int salary;
 
     public Employee(String firstName, String lastName, String nrTel, int salary) {
         this.firstName = firstName;

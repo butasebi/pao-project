@@ -1,11 +1,17 @@
-package com.company.Entities;
+package com.company.entities;
 
 public class Engineer extends Employee {
 
-    String university;
-    String specialization;
+    private String university;
+    private String specialization;
 
     public Engineer() {
+    }
+
+    public Engineer(String firstName, String lastName, String nrTel, int salary, String university, String specialization) {
+        super(firstName, lastName, nrTel, salary);
+        this.university = university;
+        this.specialization = specialization;
     }
 
     public String getUniversity() {
@@ -24,14 +30,9 @@ public class Engineer extends Employee {
         this.specialization = specialization;
     }
 
-    public Engineer(String firstName, String lastName, String nrTel, int salary, String university, String specialization) {
-        super(firstName, lastName, nrTel, salary);
-        this.university = university;
-        this.specialization = specialization;
-    }
 
     @Override
     public int getSalaryWithCommission() {
-        return this.salary;
+        return this.getsalary();
     }
 }

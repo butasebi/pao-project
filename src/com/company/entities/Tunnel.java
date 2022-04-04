@@ -1,17 +1,24 @@
-package com.company.Entities;
+package com.company.entities;
 
 public class Tunnel extends Workspace{
 
-    int depth;
-    int width;
-    int length;
-    Boolean covered;
+    private int depth;
+    private int width;
+    private int length;
+    private Boolean covered;
 
     public Tunnel() {
     }
 
     public int getDepth() {
         return depth;
+    }
+
+    public Tunnel(int depth, int width, int length, Boolean covered) {
+        this.depth = depth;
+        this.width = width;
+        this.length = length;
+        this.covered = covered;
     }
 
     public void setDepth(int depth) {
@@ -39,13 +46,6 @@ public class Tunnel extends Workspace{
     }
 
     public void setCovered(Boolean covered) {
-        this.covered = covered;
-    }
-
-    public Tunnel(int depth, int width, int length, Boolean covered) {
-        this.depth = depth;
-        this.width = width;
-        this.length = length;
         this.covered = covered;
     }
 

@@ -1,4 +1,4 @@
-package com.company.Entities;
+package com.company.services;
 
 import java.util.Scanner;
 
