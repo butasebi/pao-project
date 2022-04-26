@@ -43,7 +43,7 @@ public class Main {
                 System.out.println("Press 2 to print the autoservices database details!");
                 System.out.println("Press 3 to add an autoservice in the autoservices database!");
                 System.out.println("Press 4 sort the existing autoservices database by name (at equality of names, it's sorted by address)!");
-                System.out.println("Press 10 to quit!");
+                System.out.println("Press 10 to quit the program!");
 
                 op = cinInt();
                 if(op == 1)
