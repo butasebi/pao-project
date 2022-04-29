@@ -3,162 +3,102 @@ package com.company.services;
 import com.company.entities.*;
 
 import java.io.*;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class CSVWriter {
 
-    //AutoService writer
-    public static void writeAutoServiceCSV(List<AutoService> autoServices, String fileName) {
-
+    public static <T> void write(List<T> listToWrite, String fileName, Class<T> classToWrite) {
         try
         {
-            File csvFile = new File(fileName);
-            PrintWriter out = new PrintWriter(csvFile);
-
-            //PrintWriter out = new PrintWriter(new FileOutputStream(csvFile, true));
-            out.println("adresa, nume");
-            for(AutoService autoService : autoServices)
-            {
-                out.println(autoService.getAddress() + ", " + autoService.getName());
-            }
-            try
-            {
-                out.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            new File(fileName).createNewFile();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
-
-    }
-
-    //Elevator writer
-    public static void writeElevatorCSV(List<Elevator> elevators, String fileName) {
-
+        FileWriter f = null;
         try
         {
-            File csvFile = new File(fileName);
-            PrintWriter out = new PrintWriter(csvFile);
-            out.println("maxHeight, length, width");
-            for(Elevator elevator : elevators)
-            {
-                out.println(elevator.getMaxHeight() + ", " + elevator.getLength() + ", " +  elevator.getWidth());
-            }
-            try
-            {
-                out.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
-    }
+            f = new FileWriter(fileName);
+            var rowFields = classToWrite.getDeclaredFields();
 
-    //Employee writer
-    public static void writeEmployeeCSV(List<Employee> employees, String fileName) {
+            List<String> rowNames = new ArrayList<>();
 
-        try
-        {
-            File csvFile = new File(fileName);
-            PrintWriter out = new PrintWriter(csvFile);
-            out.println("firstName, lastName, nrTel, salary, type, engineerUniversity/managerFounder/mecanicSpecialization, engineerSpecialization");
-            for(Employee employee : employees)
+            for (var field : rowFields)
             {
-                if(employee.getClass() == Mecanic.class)
+                rowNames.add(field.toString().replaceAll(".*\\.", ""));
+            }
+
+            //Writing the names of each row
+            for (int j = 0; j < rowNames.size(); j ++)
+            {
+                f.write(rowNames.get(j));
+                if (j != rowNames.size() - 1)
                 {
-                    out.println(employee.getFirstName() + ", " + employee.getLastName() + ", " + employee.getNrTel() + ", " +
-                            Integer.toString(employee.getsalary()) + ", Mecanic, " + ((Mecanic) employee).getSpecialization());
-                }
-                else if(employee.getClass() == Engineer.class)
-                {
-                    out.println(employee.getFirstName() + ", " + employee.getLastName() + ", " + employee.getNrTel() + ", " +
-                            Integer.toString(employee.getsalary()) + ", Engineer, " + ((Engineer) employee).getUniversity() + ", " + ((Engineer) employee).getSpecialization());
-                }
-                else
-                {
-                    out.println(employee.getFirstName() + ", " + employee.getLastName() + ", " + employee.getNrTel() + ", " +
-                            Integer.toString(employee.getsalary()) + ", Manager, " + ((Manager) employee).getFounder());
+                    f.write(", ");
                 }
             }
-            try
+            f.write('\n');
+
+
+            //Writing the rows themselves
+            for (var i : listToWrite)
             {
-                out.close();
+                for (int j = 0; j < rowNames.size(); j ++)
+                {
+                    Field fieldToWrite = null;
+                    Class cls = i.getClass();
+
+                    try
+                    {
+                        fieldToWrite = cls.getDeclaredField(rowNames.get(j));
+                    }
+                    catch (Exception e)
+                    {
+                    }
+
+                    if (fieldToWrite == null)
+                    {
+                        fieldToWrite = cls.getSuperclass().getDeclaredField(rowNames.get(j));
+                    }
+
+                    fieldToWrite.setAccessible(true);
+
+                    if(Collection.class.isAssignableFrom(fieldToWrite.getType()))
+                    {
+                        f.write("[]");  //if a column is a list we will just leave the 2 brackets as symbol
+                    }
+                    else
+                    {
+                        f.write(fieldToWrite.get(i).toString());
+                    }
+                    if (j != rowNames.size() - 1)
+                    {
+                        f.write(", ");
+                    }
+
+                }
+                f.write('\n');
             }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+
+
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
-    }
-
-    //Tunnel writer
-    public static void writeClientCSV(List<Client> clients, String fileName) {
-
         try
         {
-            File csvFile = new File(fileName);
-            PrintWriter out = new PrintWriter(csvFile);
-            out.println("firstName, lastName, carBrand, carModel, carPlate");
-            for(Client client : clients)
-            {
-                out.println(client.getFirstName() + ", " + client.getLastName() + ", " +
-                        client.getCar().getBrand() + ", " + client.getCar().getModel() + ", " + client.getCar().getCarPlate());
-            }
-            try
-            {
-                out.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
+            f.close();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             e.printStackTrace();
         }
-    }
 
-    //Tunnel writer
-    public static void writeTunnelCSV(List<Tunnel> tunnels, String fileName) {
-
-        try
-        {
-            File csvFile = new File(fileName);
-            PrintWriter out = new PrintWriter(csvFile);
-            out.println("depth, width, length, covered");
-            for(Tunnel tunnel : tunnels)
-            {
-                out.println(Integer.toString(tunnel.getDepth()) + ", " + Integer.toString(tunnel.getWidth()) + ", " +
-                        Integer.toString(tunnel.getLength()) + ", " + Boolean.toString(tunnel.getCovered()));
-            }
-            try
-            {
-                out.close();
-            }
-            catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-        }
-        catch(Exception e)
-        {
-            e.printStackTrace();
-        }
     }
 
 }

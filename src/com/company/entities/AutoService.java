@@ -8,6 +8,9 @@ public class AutoService implements Comparable<AutoService> {
     private List employees;
     private List workspaces;
 
+    public AutoService() {
+    }
+
     public AutoService(String address, String name, List employees, List workspaces) {
         this.address = address;
         this.name = name;

@@ -40,10 +40,6 @@ public class Car {
 
     @Override
     public String toString() {
-        return "Car{" +
-                "brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                ", carPlate='" + carPlate + '\'' +
-                '}';
+        return brand + ", " + model + ", " + carPlate;
     }
 }

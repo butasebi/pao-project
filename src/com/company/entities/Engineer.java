@@ -32,10 +32,7 @@ public class Engineer extends Employee {
 
     @Override
     public String toString() {
-        return "Engineer{" +
-                "university='" + university + '\'' +
-                ", specialization='" + specialization + '\'' +
-                '}';
+        return university + ", " + specialization;
     }
 
     @Override

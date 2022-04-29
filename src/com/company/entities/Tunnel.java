@@ -51,12 +51,7 @@ public class Tunnel extends Workspace{
 
     @Override
     public String toString() {
-        return "Tunnel{" +
-                "depth=" + depth +
-                ", width=" + width +
-                ", length=" + length +
-                ", covered=" + covered +
-                '}';
+        return depth + ", " + width + ", " + length + ", " + "covered";
     }
 
     @Override

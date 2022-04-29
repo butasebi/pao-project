@@ -2,6 +2,7 @@ package com.company.services;
 
 import com.company.entities.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 
@@ -68,7 +69,11 @@ public class ServiceClients {
 
     public static List<Client> readClientsFromCSV() {
 
-        return CSVReader.readClientCSV("src/com/company/data/client.csv");
+        List<Client> auxClientList = CSVReader.read("src/com/company/data/client.csv", Client.class);
+        List<Car> auxCarList = CSVReader.read("src/com/company/data/car.csv", Car.class);
+        for(int i = 0; i < auxClientList.size(); i ++)
+            auxClientList.get(i).setCar(auxCarList.get(i));
+        return auxClientList;
     }
 
     public void AddClient()

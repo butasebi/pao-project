@@ -22,9 +22,7 @@ public class Mecanic extends Employee {
 
     @Override
     public String toString() {
-        return "Mecanic{" +
-                "specialization='" + specialization + '\'' +
-                '}';
+        return specialization;
     }
 
     @Override

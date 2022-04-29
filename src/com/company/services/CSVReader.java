@@ -15,240 +15,81 @@ import static java.lang.Integer.parseInt;
 
 public class CSVReader {
 
-    //Autoservice reader
-    public static List<AutoService> readAutoServiceCSV(String fileName, List<Employee> listEmployees, List<Workspace>listWorkspaces)
+    public static <T> List<T> read(String fileName, Class<T> classToRead)
     {
-        List<AutoService> result = new ArrayList<AutoService>();
-        BufferedReader reader = null;
-        String line = "";
-        String separator = ",";
+        BufferedReader fileBuffer = null;
+        try
+        {
+            fileBuffer = new BufferedReader(new FileReader(fileName));
+            List result = new ArrayList<T>();
 
-        try {
-            reader = new BufferedReader(new FileReader(fileName));
-            boolean header = true;
-            while((line = reader.readLine()) != null)
-            {
-                if(header == true)
-                {
-                    header = false;
-                    continue;
-                }
+            String line;
+            List<String> rowNames = new ArrayList<String>();
 
-                if(line.startsWith("sep="))
-                {
-                    separator = line.substring(4);
-                    continue;
-                }
-                String [] row = line.split(separator);
+            line = fileBuffer.readLine();
 
-                AutoService newObject = new AutoService(row[0].strip(), row[1].strip(), listEmployees, listWorkspaces);
-                result.add(newObject);
+            if (line == null) {
+                return result;
             }
-        }
-        catch (Exception e)
+            String[] row = line.strip().split(",");
+            for(int i = 0; i < row.length; i ++)
+            {
+                row[i] = row[i].strip();
+                rowNames.add(row[i]);
+            }
+
+            while ((line = fileBuffer.readLine()) != null)
+            {
+                row = line.strip().split(",");
+                var instanceOfClass = classToRead.getConstructor().newInstance();
+
+                for (int i = 0; i < rowNames.size(); i++)
+                {
+                    Class classInstance = instanceOfClass.getClass();
+                    Field fieldToRead = null;
+
+                    try
+                    {
+                        fieldToRead = classInstance.getDeclaredField(rowNames.get(i));
+                    }
+                    catch (Exception e)
+                    {
+
+                    }
+
+                    if (fieldToRead == null)
+                    {
+                        fieldToRead = classInstance.getSuperclass().getDeclaredField(rowNames.get(i));
+                    }
+
+                    fieldToRead.setAccessible(true);
+
+                    if (fieldToRead.getType() == String.class)
+                    {
+                        fieldToRead.set(instanceOfClass, row[i].strip());
+                    }
+                    else if (fieldToRead.getType() == int.class)
+                    {
+                        fieldToRead.set(instanceOfClass, Integer.parseInt(row[i].strip()));
+                    }
+                    else if (fieldToRead.getType() == float.class)
+                    {
+                        fieldToRead.set(instanceOfClass, Float.parseFloat(row[i].strip()));
+                    }
+                    else if (fieldToRead.getType() == boolean.class)
+                    {
+                        fieldToRead.set(instanceOfClass, Boolean.parseBoolean(row[i].strip()));
+                    }
+                }
+                result.add(instanceOfClass);
+            }
+            return result;
+
+        } catch (Exception e)
         {
             e.printStackTrace();
+            return new ArrayList<>();
         }
-        finally{
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    //Client reader
-    public static List<Client> readClientCSV(String fileName)
-    {
-        List<Client> result = new ArrayList<Client>();
-        BufferedReader reader = null;
-        String line = "";
-        String separator = ",";
-
-        try {
-            reader = new BufferedReader(new FileReader(fileName));
-            boolean header = true;
-            while((line = reader.readLine()) != null)
-            {
-                if(header == true)
-                {
-                    header = false;
-                    continue;
-                }
-
-                if(line.startsWith("sep="))
-                {
-                    separator = line.substring(4);
-                    continue;
-                }
-                String [] row = line.split(separator);
-
-                Client newObject = new Client(row[0].strip(), row[1].strip(), new Car(row[2].strip(), row[3].strip(), row[4].strip()));
-                result.add(newObject);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally{
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    //Elevator reader
-    public static List<Elevator> readElevatorCSV(String fileName)
-    {
-        List<Elevator> result = new ArrayList<Elevator>();
-
-        BufferedReader reader = null;
-        String line = "";
-        String separator = ",";
-
-        try {
-            reader = new BufferedReader(new FileReader(fileName));
-            boolean header = true;
-            while((line = reader.readLine()) != null)
-            {
-                if(header == true)
-                {
-                    header = false;
-                    continue;
-                }
-
-                if(line.startsWith("sep="))
-                {
-                    separator = line.substring(4);
-                    continue;
-                }
-                String [] row = line.split(separator);
-
-                Elevator newObject = new Elevator(parseInt(row[0].strip()), parseInt(row[1].strip()), parseInt(row[2].strip()));
-                result.add(newObject);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally{
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-    //Employee reader
-    public static List<Employee> readEmployeeCSV(String fileName)
-    {
-        List<Employee> result = new ArrayList<Employee>();
-
-        BufferedReader reader = null;
-        String line = "";
-        String separator = ",";
-        try {
-            reader = new BufferedReader(new FileReader(fileName));
-            boolean header = true;
-            while((line = reader.readLine()) != null)
-            {
-                if(header == true)
-                {
-                    header = false;
-                    continue;
-                }
-
-                if(line.startsWith("sep="))
-                {
-                    separator = line.substring(4);
-                    continue;
-                }
-                String [] row = line.split(separator);
-
-                Employee newObject;
-                if(row[4].strip().equals("Engineer"))
-                {
-                    newObject = new Engineer(row[0].strip(), row[1].strip(), row[2].strip(), parseInt(row[3].strip()), row[5].strip(), row[6].strip());
-                }
-                else if(row[4].strip().equals("Manager"))
-                {
-                    newObject = new Manager(row[0].strip(), row[1].strip(), row[2].strip(), parseInt(row[3].strip()), parseBoolean(row[5].strip()));
-                }
-                else
-                {
-                    newObject = new Mecanic(row[0].strip(), row[1].strip(), row[2].strip(), parseInt(row[3].strip()), row[5].strip());
-                }
-
-                result.add(newObject);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally{
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
-
-
-    //Tunnel reader
-    public static List<Tunnel> readTunnelCSV(String fileName)
-    {
-        List<Tunnel> result = new ArrayList<Tunnel>();
-
-        BufferedReader reader = null;
-        String line = "";
-        String separator = ",";
-
-        try {
-            reader = new BufferedReader(new FileReader(fileName));
-            boolean header = true;
-            while((line = reader.readLine()) != null)
-            {
-                if(header == true)
-                {
-                    header = false;
-                    continue;
-                }
-                if(line.startsWith("sep="))
-                {
-                    separator = line.substring(4);
-                    continue;
-                }
-                String [] row = line.split(separator);
-
-                Tunnel newObject = new Tunnel(parseInt(row[0].strip()), parseInt(row[1].strip()), parseInt(row[2].strip()), parseBoolean(row[3].strip()));
-
-                result.add(newObject);
-            }
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
-        finally{
-            try {
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return result;
     }
 
 }

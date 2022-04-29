@@ -234,19 +234,27 @@ public class ServiceAutoServices {
 
     public static List<AutoService> readAutoServicesFromCSV() {
 
+        List <Employee> listEmployees = new ArrayList<>();
+        List <Manager> listManager = CSVReader.read("src/com/company/data/manager.csv", Manager.class);
+        List <Mecanic> listMecanic = CSVReader.read("src/com/company/data/mecanic.csv", Mecanic.class);
+        List <Engineer> listEngineer = CSVReader.read("src/com/company/data/engineer.csv", Engineer.class);
 
-        List <Employee> listEmployees = CSVReader.readEmployeeCSV("src/com/company/data/employee.csv");
+        listEmployees.addAll(listMecanic);
+        listEmployees.addAll(listEngineer);
+        listEmployees.addAll(listManager);
 
         List <Workspace> listWorkspaces = new ArrayList <Workspace>();
 
-        List<Elevator> listElevator = CSVReader.readElevatorCSV("src/com/company/data/elevator.csv");
+        List<Elevator> listElevator = CSVReader.read("src/com/company/data/elevator.csv", Elevator.class);
 
         listWorkspaces.addAll(listElevator);
 
-        List<Tunnel> listTunnel = CSVReader.readTunnelCSV("src/com/company/data/tunnel.csv");
+        List<Tunnel> listTunnel = CSVReader.read("src/com/company/data/tunnel.csv", Tunnel.class);
         listWorkspaces.addAll(listTunnel);
 
-        List<AutoService> auxVec = CSVReader.readAutoServiceCSV("src/com/company/data/autoService.csv", listEmployees, listWorkspaces);
+        List<AutoService> auxVec = CSVReader.read("src/com/company/data/autoService.csv", AutoService.class);
+        auxVec.get(0).setEmployees(listEmployees);
+        auxVec.get(0).setWorkspaces(listWorkspaces);
 
         return auxVec;
     }
