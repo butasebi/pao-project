@@ -37,4 +37,13 @@ public class Car {
     public void setCarPlate(String carPlate) {
         this.carPlate = carPlate;
     }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", carPlate='" + carPlate + '\'' +
+                '}';
+    }
 }

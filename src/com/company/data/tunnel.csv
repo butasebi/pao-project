@@ -1,0 +1,6 @@
+depth, width, length, covered
+250, 65, 520, true
+255, 70, 500, true
+260, 70, 430, false
+280, 80, 460, false
+245, 65, 400, false

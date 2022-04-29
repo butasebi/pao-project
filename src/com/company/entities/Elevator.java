@@ -40,6 +40,15 @@ public class Elevator extends Workspace{
     }
 
     @Override
+    public String toString() {
+        return "Elevator{" +
+                "maxHeight=" + maxHeight +
+                ", length=" + length +
+                ", width=" + width +
+                '}';
+    }
+
+    @Override
     public float getVolume() {
         return this.length * this.maxHeight * this.width;
     }

@@ -1,31 +1,46 @@
 package com.company.services;
 
-import com.company.entities.Client;
+import com.company.entities.*;
 
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
+
+import static com.company.services.Reader.cinInt;
+import static com.company.services.Reader.cinText;
 
 public class ServiceClients {
     private static ServiceClients singleton = null;
-    private ArrayList clients;
+    private static String status = "Not created";
+    private List clients;
 
-
-    private ServiceClients(ArrayList<Client> clients) {
+    //Constructor
+    private ServiceClients(List<Client> clients) {
         this.clients = clients;
     }
 
-    public static ServiceClients getInstance(ArrayList<Client> clients)
+    //Getters and setters
+    public static String getStatus() {
+        return status;
+    }
+
+    public static void setStatus(String status) {
+        ServiceClients.status = status;
+    }
+
+    //Singleton object getter
+    public static ServiceClients getInstance(List<Client> clients)
     {
+        status = "Created";
         if(singleton == null)
             singleton = new ServiceClients(clients);
         return singleton;
     }
 
-    public ArrayList<Client> getClients() {
+    public List<Client> getClients() {
         return clients;
     }
 
-    public void setClients(ArrayList<Client> clients) {
+    public void setClients(List<Client> clients) {
         this.clients = clients;
     }
 
@@ -43,12 +58,41 @@ public class ServiceClients {
     //Read
     @Override
     public String toString() {
-        String mesaj = "The list of services is made of:";
+        String mesaj = "The list of clients is made of:";
         for(Object o : this.clients) {
             Client client = (Client) o;
             mesaj += "  " + client.getFirstName() + "\n";
         }
         return mesaj;
+    }
+
+    public static List<Client> readClientsFromCSV() {
+
+        return CSVReader.readClientCSV("src/com/company/data/client.csv");
+    }
+
+    public void AddClient()
+    {
+        String firstName, lastName, brand, model, carPlate;
+        System.out.println("Introduce the firstname of the client");
+        firstName = cinText();
+
+        System.out.println("Introduce the lastname of the client");
+        lastName = cinText();
+
+        System.out.println("Information regarding client's car:");
+
+        System.out.println("Introduce the brand of the car");
+        brand = cinText();
+
+        System.out.println("Introduce the model of the car");
+        model = cinText();
+
+        System.out.println("Introduce the car plate of the car");
+        carPlate = cinText();
+
+        Client auxClient = new Client(firstName, lastName, new Car(brand, model, carPlate));
+        this.getClients().add(auxClient);
     }
 
     //Update

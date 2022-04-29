@@ -1,14 +1,14 @@
 package com.company.entities;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class AutoService implements Comparable<AutoService> {
     private String address;
     private String name;
-    private ArrayList employees;
-    private ArrayList workspaces;
+    private List employees;
+    private List workspaces;
 
-    public AutoService(String address, String name, ArrayList employees, ArrayList workspaces) {
+    public AutoService(String address, String name, List employees, List workspaces) {
         this.address = address;
         this.name = name;
         this.employees = employees;
@@ -31,19 +31,19 @@ public class AutoService implements Comparable<AutoService> {
         this.name = name;
     }
 
-    public ArrayList<Employee> getEmployees() {
+    public List<Employee> getEmployees() {
         return employees;
     }
 
-    public void setEmployees(ArrayList employees) {
+    public void setEmployees(List employees) {
         this.employees = employees;
     }
 
-    public ArrayList getWorkspaces() {
+    public List getWorkspaces() {
         return workspaces;
     }
 
-    public void setWorkspaces(ArrayList workspaces) {
+    public void setWorkspaces(List workspaces) {
         this.workspaces = workspaces;
     }
 

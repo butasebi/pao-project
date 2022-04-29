@@ -22,12 +22,12 @@ public class Reader {
         return n;
     }
 
-    public static String cinString()
+    public static String cinText()
     {
         String n;
         Scanner cin = new Scanner(System.in);
 
-        n = cin.next();
+        n = cin.nextLine();
         return n;
     }
 }

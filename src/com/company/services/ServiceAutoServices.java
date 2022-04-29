@@ -2,23 +2,25 @@ package com.company.services;
 
 import com.company.entities.*;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Collections;
 
 import static com.company.services.Reader.cinInt;
-import static com.company.services.Reader.cinString;
+import static com.company.services.Reader.cinText;
 
 public class ServiceAutoServices {
     private static ServiceAutoServices singleton = null;
     private static String status = "Not created";
-    private ArrayList services;
+    private List services;
 
-    private ServiceAutoServices(ArrayList<AutoService> services) {
+    private ServiceAutoServices(List<AutoService> services) {
         this.services = services;
     }
 
     //Singleton object getter
-    public static ServiceAutoServices getInstance(ArrayList<AutoService> services)
+    public static ServiceAutoServices getInstance(List<AutoService> services)
     {
         status = "Created";
         if(singleton == null)
@@ -26,11 +28,11 @@ public class ServiceAutoServices {
         return singleton;
     }
 
-    public ArrayList<AutoService> getServices() {
+    public List<AutoService> getServices() {
         return services;
     }
 
-    public void setServices(ArrayList<AutoService> services) {
+    public void setServices(List<AutoService> services) {
         this.services = services;
     }
 
@@ -77,9 +79,9 @@ public class ServiceAutoServices {
         Collections.sort(services);
     }
 
-    public static ArrayList<AutoService> readAutoServices()
+    public static List<AutoService> readAutoServices()
     {
-        ArrayList<AutoService> auxVec = new ArrayList<AutoService> ();
+        List<AutoService> auxVec = new ArrayList<AutoService>();
         System.out.println("Introduce the number of autoservices the database will have:");
 
         int nrAutoServices = cinInt();
@@ -89,15 +91,15 @@ public class ServiceAutoServices {
             String name, address;
             int nrEmployees, nrWorkspaces;
             System.out.println("Introduce the name of the autoservice " + i + ":");
-            name = cinString();
+            name = cinText();
 
             System.out.println("Introduce the address of " + name + ":");
-            address = cinString();
+            address = cinText();
 
             System.out.println("Introduce how many employees will " + name + " have:");
 
             nrEmployees = cinInt();
-            ArrayList <Employee> listEmp = new ArrayList <Employee>();
+            List <Employee> listEmp = new ArrayList <Employee>();
             for(int j = 1; j <= nrEmployees; j ++)
             {
                 String firstName;
@@ -107,19 +109,19 @@ public class ServiceAutoServices {
                 String type;
 
                 System.out.println("Introduce the firstname of the employee " + j + ":");
-                firstName = cinString();
+                firstName = cinText();
 
                 System.out.println("Introduce the lastname of the employee " + j + ":");
-                lastName = cinString();
+                lastName = cinText();
 
                 System.out.println("Introduce the telephone number of " + firstName + " " + lastName + ":");
-                nrTel = cinString();
+                nrTel = cinText();
 
                 System.out.println("Introduce the salary of " + firstName + " " + lastName + ":");
                 salary = cinInt();
 
                 System.out.println("Introduce the function of " + firstName + " " + lastName + "(Manager/Enginner/Mecanic):");
-                type = cinString();
+                type = cinText();
                 System.out.println(type);
                 if(type.equals("Manager"))
                 {
@@ -139,10 +141,10 @@ public class ServiceAutoServices {
                     String specialization;
 
                     System.out.println("Introduce the university the employee pursued:");
-                    university = cinString();
+                    university = cinText();
 
                     System.out.println("Introduce the specialization at the university:");
-                    specialization = cinString();
+                    specialization = cinText();
 
                     Engineer auxEmp = new Engineer(firstName, lastName, nrTel, salary, university, specialization);
                     listEmp.add(auxEmp);
@@ -152,7 +154,7 @@ public class ServiceAutoServices {
                     String specialization;
 
                     System.out.println("Introduce the specialization at the university:");
-                    specialization = cinString();
+                    specialization = cinText();
 
                     Mecanic auxEmp = new Mecanic(firstName, lastName, nrTel, salary, specialization);
                     listEmp.add(auxEmp);
@@ -166,13 +168,13 @@ public class ServiceAutoServices {
 
             System.out.println("Introduce how many workspaces will " + name + " have:");
             nrWorkspaces = cinInt();
-            ArrayList <Workspace> listWorkspaces = new ArrayList <Workspace>();
+            List <Workspace> listWorkspaces = new ArrayList <Workspace>();
             for(int j = 1; j <= nrWorkspaces; j ++)
             {
                 String type;
 
                 System.out.println("Introduce the type of the workspace " + j + "(Tunnel/Elevator):");
-                type = cinString();
+                type = cinText();
                 if(type.equals("Tunnel"))
                 {
                     int depth;
@@ -230,20 +232,38 @@ public class ServiceAutoServices {
         return auxVec;
     }
 
+    public static List<AutoService> readAutoServicesFromCSV() {
+
+
+        List <Employee> listEmployees = CSVReader.readEmployeeCSV("src/com/company/data/employee.csv");
+
+        List <Workspace> listWorkspaces = new ArrayList <Workspace>();
+
+        List<Elevator> listElevator = CSVReader.readElevatorCSV("src/com/company/data/elevator.csv");
+
+        listWorkspaces.addAll(listElevator);
+
+        List<Tunnel> listTunnel = CSVReader.readTunnelCSV("src/com/company/data/tunnel.csv");
+        listWorkspaces.addAll(listTunnel);
+
+        List<AutoService> auxVec = CSVReader.readAutoServiceCSV("src/com/company/data/autoService.csv", listEmployees, listWorkspaces);
+
+        return auxVec;
+    }
     public void AddServiceAuto()
     {
         String name, address;
         int nrEmployees, nrWorkspaces;
         System.out.println("Introduce the name of the autoservice:");
-        name = cinString();
+        name = cinText();
 
         System.out.println("Introduce the address of " + name + ":");
-        address = cinString();
+        address = cinText();
 
         System.out.println("Introduce how many employees will " + name + " have:");
 
         nrEmployees = cinInt();
-        ArrayList <Employee> listEmp = new ArrayList <Employee>();
+        List <Employee> listEmp = new ArrayList <Employee>();
         for(int j = 1; j <= nrEmployees; j ++)
         {
             String firstName;
@@ -253,19 +273,19 @@ public class ServiceAutoServices {
             String type;
 
             System.out.println("Introduce the firstname of the employee " + j + ":");
-            firstName = cinString();
+            firstName = cinText();
 
             System.out.println("Introduce the lastname of the employee " + j + ":");
-            lastName = cinString();
+            lastName = cinText();
 
             System.out.println("Introduce the telephone number of " + firstName + " " + lastName + ":");
-            nrTel = cinString();
+            nrTel = cinText();
 
             System.out.println("Introduce the salary of " + firstName + " " + lastName + ":");
             salary = cinInt();
 
             System.out.println("Introduce the function of " + firstName + " " + lastName + "(Manager/Enginner/Mecanic):");
-            type = cinString();
+            type = cinText();
             System.out.println(type);
             if(type.equals("Manager"))
             {
@@ -285,10 +305,10 @@ public class ServiceAutoServices {
                 String specialization;
 
                 System.out.println("Introduce the university the employee pursued:");
-                university = cinString();
+                university = cinText();
 
                 System.out.println("Introduce the specialization at the university:");
-                specialization = cinString();
+                specialization = cinText();
 
                 Engineer auxEmp = new Engineer(firstName, lastName, nrTel, salary, university, specialization);
                 listEmp.add(auxEmp);
@@ -297,8 +317,8 @@ public class ServiceAutoServices {
             {
                 String specialization;
 
-                System.out.println("Introduce the specialization at the university:");
-                specialization = cinString();
+                System.out.println("Introduce the specialization:");
+                specialization = cinText();
 
                 Mecanic auxEmp = new Mecanic(firstName, lastName, nrTel, salary, specialization);
                 listEmp.add(auxEmp);
@@ -307,13 +327,13 @@ public class ServiceAutoServices {
 
         System.out.println("Introduce how many workspaces will " + name + " have:");
         nrWorkspaces = cinInt();
-        ArrayList <Workspace> listWorkspaces = new ArrayList <Workspace>();
+        List <Workspace> listWorkspaces = new ArrayList <Workspace>();
         for(int j = 1; j <= nrWorkspaces; j ++)
         {
             String type;
 
             System.out.println("Introduce the type of the workspace " + j + "(Tunnel/Elevator):");
-            type = cinString();
+            type = cinText();
             if(type.equals("Tunnel"))
             {
                 int depth;
