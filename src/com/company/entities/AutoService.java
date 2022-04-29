@@ -22,7 +22,7 @@ public class AutoService implements Comparable<AutoService> {
     public void setAddress(String address) {
         this.address = address;
     }
- 
+
     public String getName() {
         return name;
     }

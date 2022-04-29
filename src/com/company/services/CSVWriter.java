@@ -34,6 +34,7 @@ public class CSVWriter {
         {
             e.printStackTrace();
         }
+
     }
 
     //Elevator writer
