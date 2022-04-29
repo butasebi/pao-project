@@ -18,7 +18,7 @@ public class Main {
         String auditFilePath = "src/com/company/data/logbook.csv";
 
         //writeAudit is a function that takes 3 arguments: the path where to write, the message to write and a boolean value
-        //that retains weather our message is a separation message (example line 35) or a valid message like the one below
+        //that retains weather our message is a separation message (example line 39) or a valid message like the one below
         //(the purpose is to print a counter correctly for each message)
         ServiceAudit.writeAudit(auditFilePath, "Program just started", true);
 
