@@ -38,7 +38,7 @@ public class Elevator extends Workspace{
     public void setWidth(int width) {
         this.width = width;
     }
-
+ 
     @Override
     public String toString() {
         return "Elevator{" +
