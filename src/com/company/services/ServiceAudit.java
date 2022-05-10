@@ -1,11 +1,28 @@
 package com.company.services;
 
+import com.company.entities.AutoService;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
+import java.util.List;
 
 public class ServiceAudit {
+
+    private static ServiceAudit singleton = null;
     private static int lineNumber = 1;
+
+    private ServiceAudit() {
+
+    }
+
+    //Singleton object getter
+    public static ServiceAudit getInstance()
+    {
+        if(singleton == null)
+            singleton = new ServiceAudit();
+        return singleton;
+    }
 
     public static int getLineNumber() {
         return lineNumber;
