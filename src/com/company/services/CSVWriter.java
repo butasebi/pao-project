@@ -35,11 +35,25 @@ public class CSVWriter {
             //Writing the names of each row
             for (int j = 0; j < rowNames.size(); j ++)
             {
-                f.write(rowNames.get(j));
-                if (j != rowNames.size() - 1)
+                Field columnName = null;
+                Class cls = listToWrite.get(0).getClass();
+
+                try
                 {
-                    f.write(", ");
+                    columnName = cls.getDeclaredField(rowNames.get(j));
                 }
+                catch (Exception e)
+                {
+                }
+
+                if(!columnName.getType().getName().startsWith("java.lang")){
+                    rowNames.remove(j);
+                    j --;
+                    continue;
+                }
+
+                if(j != 0)f.write(", ");
+                f.write(rowNames.get(j));
             }
             f.write('\n');
 
@@ -59,6 +73,9 @@ public class CSVWriter {
                     catch (Exception e)
                     {
                     }
+
+                    if(!fieldToWrite.getType().getName().startsWith("java.lang"))
+                        continue;
 
                     if (fieldToWrite == null)
                     {

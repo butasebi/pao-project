@@ -28,7 +28,7 @@ public class Main {
         //Loading the autoservices database from the CSV file
         //The initial database will have 1 service with 5 employees and 10 workspaces: 5 tunnels and 5 elevators
         autoServicesDatabase = ServiceAutoServices.getInstance(ServiceAutoServices.readAutoServicesFromCSV());
-        ServiceAudit.writeAudit(auditFilePath, "Loaded the autoservices database from autoServiceWrite.csv", true);
+        ServiceAudit.writeAudit(auditFilePath, "Loaded the autoservices database from autoService.csv", true);
 
         //Loading the client database from the CSV file
         //The initial client database will have 5 clients
@@ -78,8 +78,8 @@ public class Main {
 
                 autoServicesDatabase.AddServiceAuto();
 
-                //keeping the actualised database in the autoServiceWrite.csv file
-                CSVWriter.write(autoServicesDatabase.getServices(), "src/com/company/data/autoServiceWrite.csv", AutoService.class);
+                //keeping the actualised database in the autoService.csv file
+                CSVWriter.write(autoServicesDatabase.getServices(), "src/com/company/data/autoService.csv", AutoService.class);
 
                 ServiceAudit.writeAudit(auditFilePath, "New service added successfully\n The new database:\n", false);
                 ServiceAudit.writeAudit(auditFilePath, autoServicesDatabase.toString() + "\n", false);
@@ -113,8 +113,14 @@ public class Main {
 
                 clientsDatabase.AddClient();
 
-                //keeping the actualised database in the clientsWrite.csv file
-                CSVWriter.write(clientsDatabase.getClients(), "src/com/company/data/clientsWrite.csv", Client.class);
+                //keeping the actualised database in the client.csv file
+                CSVWriter.write(clientsDatabase.getClients(), "src/com/company/data/client.csv", Client.class);
+
+                //auxListofCars, used to extract the cars for adding them to the CSV
+                List<Car> auxListOfCars = new ArrayList<Car>();
+                clientsDatabase.getClients().stream().forEach((n) -> auxListOfCars.add(n.getCar()));
+
+                CSVWriter.write(auxListOfCars, "src/com/company/data/car.csv", Car.class);
 
                 ServiceAudit.writeAudit(auditFilePath, "New client added successfully\n The new database:\n", false);
                 ServiceAudit.writeAudit(auditFilePath, clientsDatabase.toString() + "\n", false);
