@@ -253,8 +253,12 @@ public class ServiceAutoServices {
         listWorkspaces.addAll(listTunnel);
 
         List<AutoService> auxVec = CSVReader.read("src/com/company/data/autoService.csv", AutoService.class);
-        auxVec.get(0).setEmployees(listEmployees);
-        auxVec.get(0).setWorkspaces(listWorkspaces);
+
+        for(int i = 0; i < auxVec.size(); i ++)
+        {
+            auxVec.get(i).setEmployees(listEmployees.subList(i * (listEmployees.size() / auxVec.size()), (i + 1) * (listEmployees.size() / auxVec.size())));
+            auxVec.get(i).setWorkspaces(listWorkspaces.subList(i * (listWorkspaces.size() / auxVec.size()), (i + 1) * (listWorkspaces.size() / auxVec.size())));
+        }
 
         return auxVec;
     }
