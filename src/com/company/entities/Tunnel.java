@@ -50,6 +50,11 @@ public class Tunnel extends Workspace{
     }
 
     @Override
+    public String toString() {
+        return depth + ", " + width + ", " + length + ", " + "covered";
+    }
+
+    @Override
     public float getVolume() {
         return 0;
     }

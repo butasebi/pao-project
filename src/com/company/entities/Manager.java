@@ -5,6 +5,7 @@ public class Manager extends Employee {
     private Boolean founder;
 
     public Manager() {
+        this.founder = false;
     }
 
     public Manager(String nume, String prenume, String nr_tel, int salariu, Boolean founder) {
@@ -18,6 +19,11 @@ public class Manager extends Employee {
 
     public void setFounder(Boolean founder) {
         this.founder = founder;
+    }
+
+    @Override
+    public String toString() {
+        return Boolean.toString(founder);
     }
 
     @Override

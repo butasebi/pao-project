@@ -37,4 +37,9 @@ public class Car {
     public void setCarPlate(String carPlate) {
         this.carPlate = carPlate;
     }
+
+    @Override
+    public String toString() {
+        return brand + ", " + model + ", " + carPlate;
+    }
 }

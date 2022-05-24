@@ -1,9 +1,12 @@
 package com.company;
 
-import com.company.entities.AutoService;
-import com.company.services.ServiceAutoServices;
+import com.company.entities.*;
+import com.company.services.*;
 
-import java.util.ArrayList;
+import java.security.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.List;
 
 import static com.company.services.Reader.cinInt;
 
@@ -11,68 +14,138 @@ public class Main {
 
     public static void main(String[] args) {
 
-        ServiceAutoServices database = null;
+        //the auditFilePath keeps the location where we will keep a logbook of the program activity
+        String auditFilePath = "src/com/company/data/logbook.csv";
+
+        String timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
+
+        //writeAudit is a function that takes 3 arguments: the path where to write, the message to write and a boolean value
+        //that retains weather our message is a separation message or a valid message like the one below
+        //(the purpose is to print a counter correctly for each message)
+        ServiceAudit.writeAudit(auditFilePath, timestamp + " Program just started", true);
+
+        ServiceAutoServices autoServicesDatabase = null;
+        ServiceClients clientsDatabase = null;
+
+        //Loading the autoservices database from the CSV file
+        //The initial database will have 1 service with 5 employees and 10 workspaces: 5 tunnels and 5 elevators
+        autoServicesDatabase = ServiceAutoServices.getInstance(ServiceAutoServices.readAutoServicesFromCSV());
+
+        //Loading the client database from the CSV file
+        //The initial client database will have 5 clients
+        clientsDatabase = ServiceClients.getInstance(ServiceClients.readClientsFromCSV());
+
         int op;
         while(true)
         {
-            if(ServiceAutoServices.getStatus().equals("Not created"))
-            {
-                //options until we create the database
-                System.out.println("Press 1 to create the autoservices database!");
-                System.out.println("Press 10 to quit!");
+            //options after we created the database
+            System.out.println("Press 1 to replace the autoservices database!");
+            System.out.println("Press 2 to print the autoservices database details!");
+            System.out.println("Press 3 to add an autoservice in the autoservices database!");
+            System.out.println("Press 4 sort the existing autoservices database by name (at equality of names, it's sorted by address)!");
+            System.out.println("Press 5 to print the clients database details!");
+            System.out.println("Press 6 to add an in the clients database!");
+            System.out.println("Press 7 to print a list with the brands of the cars owned by the clients, sorted alphabetically!");
+            System.out.println("Press 8 to print a list with the autoservices names, sorted alphabetically!!");
+            System.out.println("Press 10 to quit the program!");
 
-                op = cinInt();
-                if(op == 1)
-                {
-                    database = ServiceAutoServices.getInstance(ServiceAutoServices.readAutoServices());
-                }
-                else if(op == 10)
-                {
-                    break;
-                }
-                else
-                {
-                    System.out.println("Invalid command, try again!");
-                    continue;
-                }
+            op = cinInt();
+
+            // current time for the logbook
+            timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
+
+            if(op == 1)
+            {
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Replaced autoservices database\n", true);
+
+                List<AutoService> aux = ServiceAutoServices.readAutoServices();
+                autoServicesDatabase.setServices(aux);
+
+            }
+            else if(op == 2)
+            {
+                System.out.println(autoServicesDatabase.toString());
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Autoservices database printed to console\n", true);
+            }
+            else if(op == 3)
+            {
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Added a new autoservice to database\n", true);
+
+                autoServicesDatabase.AddServiceAuto();
+
+                //keeping the actualised database in the autoService.csv file
+                CSVWriter.write(autoServicesDatabase.getServices(), "src/com/company/data/autoService.csv", AutoService.class);
+            }
+            else if(op == 4)
+            {
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Sorted autoservice database\n The old database:", true);
+
+                autoServicesDatabase.SortListOfAutoServices();
+                System.out.println("List sorted successfully!");
+
+            }
+            else if(op == 5)
+            {
+                System.out.println(clientsDatabase.toString());
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Clients database printed to console\n", true);
+            }
+            else if(op == 6)
+            {
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Added a new client to database\n", true);
+
+                clientsDatabase.AddClient();
+
+                //keeping the actualised database in the client.csv file
+                CSVWriter.write(clientsDatabase.getClients(), "src/com/company/data/client.csv", Client.class);
+
+                //auxListofCars, used to extract the cars for adding them to the CSV
+                List<Car> auxListOfCars = new ArrayList<Car>();
+                clientsDatabase.getClients().stream().forEach((n) -> auxListOfCars.add(n.getCar()));
+
+                CSVWriter.write(auxListOfCars, "src/com/company/data/car.csv", Car.class);
+
+            }
+            else if(op == 7)
+            {
+                List<String> listForLog = new ArrayList<String>();
+
+                clientsDatabase.getClients().stream().
+                        sorted((n1, n2) -> n1.getCar().getBrand().compareTo(n2.getCar().getBrand())).
+                        forEach((n) -> listForLog.add(n.getCar().getBrand()));
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Printed the car brands of the clients from the database sorted alphabetically\n", true);
+
+                clientsDatabase.getClients().stream().
+                        sorted((n1, n2) -> n1.getCar().getBrand().compareTo(n2.getCar().getBrand())).
+                        forEach((n) -> System.out.println(n.getCar().getBrand()));
+            }
+            else if(op == 8)
+            {
+                List<String> listForLog = new ArrayList<String>();
+                autoServicesDatabase.getServices().stream().
+                        sorted((n1, n2) -> n1.getName().compareTo(n2.getName())).
+                        forEach((n) -> listForLog.add(n.getName()));
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Printed the names of the autoservices from the database sorted alphabetically\n", true);
+
+                autoServicesDatabase.getServices().stream().
+                        sorted((n1, n2) -> n1.getName().compareTo(n2.getName())).
+                        forEach((n) -> System.out.println(n.getName()));
+            }
+            else if(op == 10)
+            {
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Program terminated", true);
+                ServiceAudit.writeAudit(auditFilePath, "\n--------------------------------------\n-----------------END------------------\n--------------------------------------\n", false);
+
+                break;
             }
             else
             {
-                //options after we created the database
-                System.out.println("Press 1 to replace the autoservices database!");
-                System.out.println("Press 2 to print the autoservices database details!");
-                System.out.println("Press 3 to add an autoservice in the autoservices database!");
-                System.out.println("Press 4 sort the existing autoservices database by name (at equality of names, it's sorted by address)!");
-                System.out.println("Press 10 to quit!");
-
-                op = cinInt();
-                if(op == 1)
-                {
-                    ArrayList<AutoService> aux = ServiceAutoServices.readAutoServices();
-                    database.setServices(aux);
-                }
-                else if(op == 2)
-                {
-                    System.out.println(database.toString());
-                }
-                else if(op == 3)
-                {
-                    database.AddServiceAuto();
-                }
-                else if(op == 4)
-                {
-                    database.SortListOfAutoServices();
-                    System.out.println("List sorted successfully!");
-                }
-                else if(op == 10)
-                {
-                    break;
-                }
-                else
-                {
-                    System.out.println("Invalid command, try again!");
-                    continue;
-                }
+                System.out.println("Invalid command, try again!");
+                continue;
             }
         }
     }

@@ -20,6 +20,10 @@ public class Mecanic extends Employee {
         this.specialization = specialization;
     }
 
+    @Override
+    public String toString() {
+        return specialization;
+    }
 
     @Override
     public int getSalaryWithCommission() {

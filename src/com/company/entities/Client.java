@@ -44,4 +44,13 @@ public class Client implements Comparable<Client>{
     public void setCar(Car car) {
         this.car = car;
     }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", car=" + car +
+                '}';
+    }
 }

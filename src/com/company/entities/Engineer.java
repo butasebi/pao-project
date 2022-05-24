@@ -30,6 +30,10 @@ public class Engineer extends Employee {
         this.specialization = specialization;
     }
 
+    @Override
+    public String toString() {
+        return university + ", " + specialization;
+    }
 
     @Override
     public int getSalaryWithCommission() {
