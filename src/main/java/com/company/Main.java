@@ -15,7 +15,7 @@ public class Main {
     public static void main(String[] args) {
 
         //the auditFilePath keeps the location where we will keep a logbook of the program activity
-        String auditFilePath = "src/com/company/data/logbook.csv";
+        String auditFilePath = "src/main/java/com/company/data/logbook.csv";
 
         String timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
 
@@ -75,7 +75,7 @@ public class Main {
                 autoServicesDatabase.AddServiceAuto();
 
                 //keeping the actualised database in the autoService.csv file
-                CSVWriter.write(autoServicesDatabase.getServices(), "src/com/company/data/autoService.csv", AutoService.class);
+                CSVWriter.write(autoServicesDatabase.getServices(), "src/main/java/com/company/data/autoService.csv", AutoService.class);
             }
             else if(op == 4)
             {
