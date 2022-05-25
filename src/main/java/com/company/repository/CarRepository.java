@@ -36,6 +36,9 @@ public class CarRepository {
         }
     }
 
+    //CRUD
+
+    //CREATE
     public void insertCar(Car car) {
         String insertCarSql = "INSERT INTO car(brand, model, carPlate) VALUES(?, ?, ?)";
 
@@ -53,41 +56,7 @@ public class CarRepository {
     }
 
 
-    public Car getCarByCarPlate(String carPlate) {
-        String selectSql = "SELECT * FROM car WHERE carPlate=?";
-
-        Connection connection = DatabaseConfiguration.getDatabaseConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(selectSql)) {
-            preparedStatement.setString(3, carPlate);
-
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return mapToCar(resultSet);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    public void updateCarModel(String model, String carPlate) {
-        String updateNameSql = "UPDATE car SET model=? WHERE carPlate=?";
-
-        Connection connection = DatabaseConfiguration.getDatabaseConnection();
-        try (PreparedStatement preparedStatement = connection.prepareStatement(updateNameSql)) {
-            preparedStatement.setString(2, model);
-            preparedStatement.setString(3, carPlate);
-
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private Car mapToCar(ResultSet resultSet) throws SQLException {
-        if (resultSet.next()) {
-            return new Car(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
-        }
-        return null;
-    }
+    //READ
 
     public void displayCar() {
         String selectSql = "SELECT * FROM car";
@@ -106,4 +75,58 @@ public class CarRepository {
             e.printStackTrace();
         }
     }
+
+    public Car getCarByCarPlate(String carPlate) {
+        String selectSql = "SELECT * FROM car WHERE carPlate=?";
+
+        Connection connection = DatabaseConfiguration.getDatabaseConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(selectSql)) {
+            preparedStatement.setString(3, carPlate);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return mapToCar(resultSet);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    //UPDATE
+    public void updateCarModel(String model, String carPlate) {
+        String updateNameSql = "UPDATE car SET model=? WHERE carPlate=?";
+
+        Connection connection = DatabaseConfiguration.getDatabaseConnection();
+        try (PreparedStatement preparedStatement = connection.prepareStatement(updateNameSql)) {
+            preparedStatement.setString(2, model);
+            preparedStatement.setString(3, carPlate);
+
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //DELETE
+    public void deleteCarByCarPlate(String carPlate) {
+        String deleteCarSql = "DELETE FROM car WHERE carPlate =  ?";
+
+        Connection connection = DatabaseConfiguration.getDatabaseConnection();
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(deleteCarSql)) {
+            preparedStatement.setString(1, carPlate);
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private Car mapToCar(ResultSet resultSet) throws SQLException {
+        if (resultSet.next()) {
+            return new Car(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
+        }
+        return null;
+    }
+
 }

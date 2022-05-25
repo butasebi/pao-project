@@ -46,7 +46,10 @@ public class Main {
 
 //        CarRepository x = CarRepository.getInstance();
 //        x.createTable();
+//        x.deleteCarByCarPlate("VL01VVF");
 //        x.insertCar(new Car("Volvo", "XC90", "VL01VVF"));
+//        x.deleteCarByCarPlate("VL01VVF");
+//
 //        x.displayCar();
 
 //        ClientRepository x = ClientRepository.getInstance();
