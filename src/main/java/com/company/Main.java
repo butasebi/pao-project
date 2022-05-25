@@ -5,6 +5,7 @@ import com.company.entities.*;
 import com.company.models.*;
 import com.company.models.AutoService;
 import com.company.models.Client;
+import com.company.models.Manager;
 import com.company.repository.*;
 import com.company.services.*;
 
@@ -37,6 +38,21 @@ public class Main {
 //        x.createTable();
 //        x.insertAutoService(new AutoService("GIGELOMANIA", "adresa"));
 //        x.displayAutoService();
+
+//        ManagerRepository x = ManagerRepository.getInstance();
+//        x.createTable();
+//        x.insertManager(new Manager("Andreea", "Antonescu", "0752952948", 2500, Boolean.TRUE));
+//        x.displayManager();
+
+//        CarRepository x = CarRepository.getInstance();
+//        x.createTable();
+//        x.insertCar(new Car("Volvo", "XC90", "VL01VVF"));
+//        x.displayCar();
+
+//        ClientRepository x = ClientRepository.getInstance();
+//        x.createTable();
+//        x.insertClient(new Client("Florinela", "Andronescu", "VL01VEF"));
+//        x.displayClient();
 
         //the auditFilePath keeps the location where we will keep a logbook of the program activity
         String auditFilePath = "src/main/java/com/company/data/logbook.csv";

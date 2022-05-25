@@ -37,11 +37,11 @@ public class AutoServiceRepository {
     }
 
     public void insertAutoService(AutoService autoService) {
-        String insertCarSql = "INSERT INTO AutoService(address, name) VALUES(?, ?)";
+        String insertAutoServiceSql = "INSERT INTO AutoService(address, name) VALUES(?, ?)";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertCarSql)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertAutoServiceSql)) {
             preparedStatement.setString(1, autoService.getAddress());
             preparedStatement.setString(2, autoService.getName());
 
