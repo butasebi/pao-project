@@ -3,11 +3,9 @@ package com.company;
 import com.company.config.DatabaseConfiguration;
 import com.company.entities.*;
 import com.company.models.*;
+import com.company.models.AutoService;
 import com.company.models.Client;
-import com.company.repository.CarRepositoryUsingPreparedStatement;
-import com.company.repository.CarRepositoryUsingStatement;
-import com.company.repository.ClientRepositoryUsingPreparedStatement;
-import com.company.repository.ClientRepositoryUsingStatement;
+import com.company.repository.*;
 import com.company.services.*;
 
 import java.security.Timestamp;
@@ -34,6 +32,11 @@ public class Main {
 //
 //        ClientRepositoryUsingStatement xccc = ClientRepositoryUsingStatement.getInstance();
 //        xccc.displayClient();
+
+//        AutoServiceRepository x = AutoServiceRepository.getInstance();
+//        x.createTable();
+//        x.insertAutoService(new AutoService("GIGELOMANIA", "adresa"));
+//        x.displayAutoService();
 
         //the auditFilePath keeps the location where we will keep a logbook of the program activity
         String auditFilePath = "src/main/java/com/company/data/logbook.csv";
@@ -79,7 +82,7 @@ public class Main {
             {
                 ServiceAudit.writeAudit(auditFilePath, timestamp + " Replaced autoservices database\n", true);
 
-                List<AutoService> aux = ServiceAutoServices.readAutoServices();
+                List<com.company.entities.AutoService> aux = ServiceAutoServices.readAutoServices();
                 autoServicesDatabase.setServices(aux);
 
             }
@@ -96,7 +99,7 @@ public class Main {
                 autoServicesDatabase.AddServiceAuto();
 
                 //keeping the actualised database in the autoService.csv file
-                CSVWriter.write(autoServicesDatabase.getServices(), "src/main/java/com/company/data/autoService.csv", AutoService.class);
+                CSVWriter.write(autoServicesDatabase.getServices(), "src/main/java/com/company/data/autoService.csv", com.company.entities.AutoService.class);
             }
             else if(op == 4)
             {
