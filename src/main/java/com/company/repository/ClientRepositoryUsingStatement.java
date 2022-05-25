@@ -7,26 +7,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class CarRepositoryUsingStatement {
+public class ClientRepositoryUsingStatement {
 
-    private static CarRepositoryUsingStatement singleton = null;
+    private static ClientRepositoryUsingStatement singleton = null;
 
-    private CarRepositoryUsingStatement() {
+    private ClientRepositoryUsingStatement() {
 
     }
 
     //Singleton object getter
-    public static CarRepositoryUsingStatement getInstance()
+    public static ClientRepositoryUsingStatement getInstance()
     {
         if(singleton == null)
-            singleton = new CarRepositoryUsingStatement();
+            singleton = new ClientRepositoryUsingStatement();
         return singleton;
     }
 
     public void createTable() {
-        String createTableSql = "CREATE TABLE IF NOT EXISTS car " +
-                "(brand varchar(30), " +
-                "model varchar(30), " +
+        String createTableSql = "CREATE TABLE IF NOT EXISTS client " +
+                "(firstname varchar(30), " +
+                "lastname varchar(30), " +
                 "carPlate varchar(30) PRIMARY KEY)";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
@@ -38,29 +38,28 @@ public class CarRepositoryUsingStatement {
         }
     }
 
-    public void addCar(String brand, String model, String carPlate) {
-        String insertCarSql = "INSERT INTO car(brand, model, carPlate) VALUES('Dacia', '1300', 'VL99DCC')";
+    public void addCar() {
+        String insertClientSql = "INSERT INTO client(firstname, lastname, carPlate) VALUES('Gigel', 'Andreescu', 'VL99DCC')";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         try (Statement stmt = connection.createStatement()) { //try with resources
-            stmt.executeUpdate(insertCarSql); // returns no of altered lines
+            stmt.executeUpdate(insertClientSql); // returns no of altered lines
         } catch (SQLException e) {
-            System.out.println("Eroare, numarul VL99DCC exista deja!");
             e.printStackTrace();
         }
     }
 
-    public void displayCar() {
-        String selectSql = "SELECT * FROM car";
+    public void displayClient() {
+        String selectSql = "SELECT * FROM client";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         try (Statement stmt = connection.createStatement()) { //try with resources
             ResultSet resultSet = stmt.executeQuery(selectSql);
             while (resultSet.next()) {
-                System.out.println("Brand:" + resultSet.getString(1));
-                System.out.println("Model:" + resultSet.getString(2));
+                System.out.println("Firstname:" + resultSet.getString(1));
+                System.out.println("Lastname:" + resultSet.getString(2));
                 System.out.println("CarPlate:" + resultSet.getString(3));
             }
 

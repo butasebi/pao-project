@@ -1,6 +1,13 @@
 package com.company;
 
+import com.company.config.DatabaseConfiguration;
 import com.company.entities.*;
+import com.company.models.*;
+import com.company.models.Client;
+import com.company.repository.CarRepositoryUsingPreparedStatement;
+import com.company.repository.CarRepositoryUsingStatement;
+import com.company.repository.ClientRepositoryUsingPreparedStatement;
+import com.company.repository.ClientRepositoryUsingStatement;
 import com.company.services.*;
 
 import java.security.Timestamp;
@@ -13,6 +20,20 @@ import static com.company.services.Reader.cinInt;
 public class Main {
 
     public static void main(String[] args) {
+
+//        CarRepositoryUsingPreparedStatement x = CarRepositoryUsingPreparedStatement.getInstance();
+//        x.insertCar(new Car("Volvo", "XC90", "VL01VVV"));
+//        CarRepositoryUsingStatement y = CarRepositoryUsingStatement.getInstance();
+//        y.displayCar();
+//
+//        ClientRepositoryUsingStatement xcc = ClientRepositoryUsingStatement.getInstance();
+//        xcc.createTable();
+//
+//        ClientRepositoryUsingPreparedStatement xc = ClientRepositoryUsingPreparedStatement.getInstance();
+//        xc.insertClient(new Client("Florinela", "Andronescu", "VL01VVC"));
+//
+//        ClientRepositoryUsingStatement xccc = ClientRepositoryUsingStatement.getInstance();
+//        xccc.displayClient();
 
         //the auditFilePath keeps the location where we will keep a logbook of the program activity
         String auditFilePath = "src/main/java/com/company/data/logbook.csv";
@@ -99,7 +120,7 @@ public class Main {
                 clientsDatabase.AddClient();
 
                 //keeping the actualised database in the client.csv file
-                CSVWriter.write(clientsDatabase.getClients(), "src/com/company/data/client.csv", Client.class);
+                CSVWriter.write(clientsDatabase.getClients(), "src/com/company/data/client.csv", com.company.entities.Client.class);
 
                 //auxListofCars, used to extract the cars for adding them to the CSV
                 List<Car> auxListOfCars = new ArrayList<Car>();
@@ -140,6 +161,7 @@ public class Main {
                 ServiceAudit.writeAudit(auditFilePath, timestamp + " Program terminated", true);
                 ServiceAudit.writeAudit(auditFilePath, "\n--------------------------------------\n-----------------END------------------\n--------------------------------------\n", false);
 
+                DatabaseConfiguration.closeDatabaseConnection();
                 break;
             }
             else

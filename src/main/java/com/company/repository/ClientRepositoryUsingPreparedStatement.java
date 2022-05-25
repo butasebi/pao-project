@@ -2,37 +2,38 @@ package com.company.repository;
 
 import com.company.config.DatabaseConfiguration;
 import com.company.entities.Car;
+import com.company.models.Client;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class CarRepositoryUsingPreparedStatement {
+public class ClientRepositoryUsingPreparedStatement {
 
-    private static CarRepositoryUsingPreparedStatement singleton = null;
+    private static ClientRepositoryUsingPreparedStatement singleton = null;
 
-    private CarRepositoryUsingPreparedStatement() {
+    private ClientRepositoryUsingPreparedStatement() {
 
     }
 
     //Singleton object getter
-    public static CarRepositoryUsingPreparedStatement getInstance()
+    public static ClientRepositoryUsingPreparedStatement getInstance()
     {
         if(singleton == null)
-            singleton = new CarRepositoryUsingPreparedStatement();
+            singleton = new ClientRepositoryUsingPreparedStatement();
         return singleton;
     }
 
-    public void insertCar(Car car) {
-        String insertCarSql = "INSERT INTO car(brand, model, carPlate) VALUES(?, ?, ?)";
+    public void insertClient(Client client) {
+        String insertCarSql = "INSERT INTO client(firstname, lastname, carPlate) VALUES(?, ?, ?)";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(insertCarSql)) {
-            preparedStatement.setString(1, car.getBrand());
-            preparedStatement.setString(2, car.getModel());
-            preparedStatement.setString(3, car.getCarPlate());
+            preparedStatement.setString(1, client.getFirstName());
+            preparedStatement.setString(2, client.getLastName());
+            preparedStatement.setString(3, client.getCarPlate());
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
@@ -41,27 +42,28 @@ public class CarRepositoryUsingPreparedStatement {
     }
 
 
-    public Car getCarByCarPlate(String carPlate) {
-        String selectSql = "SELECT * FROM car WHERE carPlate=?";
+    public Client getClientByCarPlate(String carPlate) {
+        String selectSql = "SELECT * FROM client WHERE carPlate=?";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(selectSql)) {
             preparedStatement.setString(3, carPlate);
 
             ResultSet resultSet = preparedStatement.executeQuery();
-            return mapToCar(resultSet);
+            return mapToClient(resultSet);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void updateCarModel(String model, String carPlate) {
-        String updateNameSql = "UPDATE car SET model=? WHERE carPlate=?";
+    public void updateClientName(String firstname, String carPlate) {
+        String updateNameSql = "UPDATE client SET firstname=? WHERE carPlate=?";
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateNameSql)) {
-            preparedStatement.setString(2, model);
+
+            preparedStatement.setString(2, firstname);
             preparedStatement.setString(3, carPlate);
 
             preparedStatement.executeUpdate();
@@ -70,9 +72,9 @@ public class CarRepositoryUsingPreparedStatement {
         }
     }
 
-    private Car mapToCar(ResultSet resultSet) throws SQLException {
+    private Client mapToClient(ResultSet resultSet) throws SQLException {
         if (resultSet.next()) {
-            return new Car(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
+            return new Client(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
         }
         return null;
     }
