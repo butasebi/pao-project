@@ -98,8 +98,8 @@ public class CarRepository {
 
         Connection connection = DatabaseConfiguration.getDatabaseConnection();
         try (PreparedStatement preparedStatement = connection.prepareStatement(updateNameSql)) {
-            preparedStatement.setString(2, model);
-            preparedStatement.setString(3, carPlate);
+            preparedStatement.setString(1, model);
+            preparedStatement.setString(2, carPlate);
 
             preparedStatement.executeUpdate();
         } catch (SQLException e) {

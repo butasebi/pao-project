@@ -13,6 +13,7 @@ import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.company.services.Reader.cinInt;
 
@@ -90,7 +91,11 @@ public class Main {
             System.out.println("Press 6 to add an in the clients database!");
             System.out.println("Press 7 to print a list with the brands of the cars owned by the clients, sorted alphabetically!");
             System.out.println("Press 8 to print a list with the autoservices names, sorted alphabetically!!");
-            System.out.println("Press 10 to quit the program!");
+            System.out.println("Press 9 to introduce a car in the Car table from the SQL schema!");
+            System.out.println("Press 10 to display the cars from the Car table from the SQL schema!");
+            System.out.println("Press 11 to update the model of a car from the Car table from the SQL schema!");
+            System.out.println("Press 12 to delete a car from the Car table from the SQL schema!");
+            System.out.println("Press 15 to quit the program!");
 
             op = cinInt();
 
@@ -178,7 +183,57 @@ public class Main {
                         sorted((n1, n2) -> n1.getName().compareTo(n2.getName())).
                         forEach((n) -> System.out.println(n.getName()));
             }
+            else if(op == 9)
+            {
+                System.out.println("Introduce the car brand:");
+                String brand = Reader.cinText();
+
+                System.out.println("Introduce the car model:");
+                String model = Reader.cinText();
+
+                System.out.println("Introduce the car plate:");
+                String carPlate = Reader.cinText();
+
+                CarRepository x = CarRepository.getInstance();
+                x.createTable();
+                x.insertCar(new Car(brand, model, carPlate));
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Created a new car in the SQL table!", true);
+            }
             else if(op == 10)
+            {
+                CarRepository x = CarRepository.getInstance();
+                x.createTable();
+                x.displayCar();
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Displayed the cars from the SQL table!", true);
+            }
+            else if(op == 11)
+            {
+                System.out.println("Introduce the new car model:");
+                String model = Reader.cinText();
+
+                System.out.println("Introduce the car plate:");
+                String carPlate = Reader.cinText();
+
+                CarRepository x = CarRepository.getInstance();
+                x.createTable();
+                x.updateCarModel(model, carPlate);
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Updated a car in the SQL table!", true);
+            }
+            else if(op == 12)
+            {
+                System.out.println("Introduce the car plate:");
+                String carPlate = Reader.cinText();
+
+                CarRepository x = CarRepository.getInstance();
+                x.createTable();
+                x.deleteCarByCarPlate(carPlate);
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Deleted a car in the SQL table!", true);
+            }
+            else if(op == 15)
             {
                 ServiceAudit.writeAudit(auditFilePath, timestamp + " Program terminated", true);
                 ServiceAudit.writeAudit(auditFilePath, "\n--------------------------------------\n-----------------END------------------\n--------------------------------------\n", false);
