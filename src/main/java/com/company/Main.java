@@ -1,12 +1,19 @@
 package com.company;
 
+import com.company.config.DatabaseConfiguration;
 import com.company.entities.*;
+import com.company.models.*;
+import com.company.models.AutoService;
+import com.company.models.Client;
+import com.company.models.Manager;
+import com.company.repository.*;
 import com.company.services.*;
 
 import java.security.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.company.services.Reader.cinInt;
 
@@ -14,8 +21,45 @@ public class Main {
 
     public static void main(String[] args) {
 
+//        CarRepositoryUsingPreparedStatement x = CarRepositoryUsingPreparedStatement.getInstance();
+//        x.insertCar(new Car("Volvo", "XC90", "VL01VVV"));
+//        CarRepositoryUsingStatement y = CarRepositoryUsingStatement.getInstance();
+//        y.displayCar();
+//
+//        ClientRepositoryUsingStatement xcc = ClientRepositoryUsingStatement.getInstance();
+//        xcc.createTable();
+//
+//        ClientRepositoryUsingPreparedStatement xc = ClientRepositoryUsingPreparedStatement.getInstance();
+//        xc.insertClient(new Client("Florinela", "Andronescu", "VL01VVC"));
+//
+//        ClientRepositoryUsingStatement xccc = ClientRepositoryUsingStatement.getInstance();
+//        xccc.displayClient();
+
+//        AutoServiceRepository x = AutoServiceRepository.getInstance();
+//        x.createTable();
+//        x.insertAutoService(new AutoService("GIGELOMANIA", "adresa"));
+//        x.displayAutoService();
+
+//        ManagerRepository x = ManagerRepository.getInstance();
+//        x.createTable();
+//        x.insertManager(new Manager("Andreea", "Antonescu", "0752952948", 2500, Boolean.TRUE));
+//        x.displayManager();
+
+//        CarRepository x = CarRepository.getInstance();
+//        x.createTable();
+//        x.deleteCarByCarPlate("VL01VVF");
+//        x.insertCar(new Car("Volvo", "XC90", "VL01VVF"));
+//        x.deleteCarByCarPlate("VL01VVF");
+//
+//        x.displayCar();
+
+//        ClientRepository x = ClientRepository.getInstance();
+//        x.createTable();
+//        x.insertClient(new Client("Florinela", "Andronescu", "VL01VEF"));
+//        x.displayClient();
+
         //the auditFilePath keeps the location where we will keep a logbook of the program activity
-        String auditFilePath = "src/com/company/data/logbook.csv";
+        String auditFilePath = "src/main/java/com/company/data/logbook.csv";
 
         String timestamp = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new Date());
 
@@ -47,7 +91,11 @@ public class Main {
             System.out.println("Press 6 to add an in the clients database!");
             System.out.println("Press 7 to print a list with the brands of the cars owned by the clients, sorted alphabetically!");
             System.out.println("Press 8 to print a list with the autoservices names, sorted alphabetically!!");
-            System.out.println("Press 10 to quit the program!");
+            System.out.println("Press 9 to introduce a car in the Car table from the SQL schema!");
+            System.out.println("Press 10 to display the cars from the Car table from the SQL schema!");
+            System.out.println("Press 11 to update the model of a car from the Car table from the SQL schema!");
+            System.out.println("Press 12 to delete a car from the Car table from the SQL schema!");
+            System.out.println("Press 15 to quit the program!");
 
             op = cinInt();
 
@@ -58,7 +106,7 @@ public class Main {
             {
                 ServiceAudit.writeAudit(auditFilePath, timestamp + " Replaced autoservices database\n", true);
 
-                List<AutoService> aux = ServiceAutoServices.readAutoServices();
+                List<com.company.entities.AutoService> aux = ServiceAutoServices.readAutoServices();
                 autoServicesDatabase.setServices(aux);
 
             }
@@ -75,7 +123,7 @@ public class Main {
                 autoServicesDatabase.AddServiceAuto();
 
                 //keeping the actualised database in the autoService.csv file
-                CSVWriter.write(autoServicesDatabase.getServices(), "src/com/company/data/autoService.csv", AutoService.class);
+                CSVWriter.write(autoServicesDatabase.getServices(), "src/main/java/com/company/data/autoService.csv", com.company.entities.AutoService.class);
             }
             else if(op == 4)
             {
@@ -99,7 +147,7 @@ public class Main {
                 clientsDatabase.AddClient();
 
                 //keeping the actualised database in the client.csv file
-                CSVWriter.write(clientsDatabase.getClients(), "src/com/company/data/client.csv", Client.class);
+                CSVWriter.write(clientsDatabase.getClients(), "src/com/company/data/client.csv", com.company.entities.Client.class);
 
                 //auxListofCars, used to extract the cars for adding them to the CSV
                 List<Car> auxListOfCars = new ArrayList<Car>();
@@ -135,11 +183,62 @@ public class Main {
                         sorted((n1, n2) -> n1.getName().compareTo(n2.getName())).
                         forEach((n) -> System.out.println(n.getName()));
             }
+            else if(op == 9)
+            {
+                System.out.println("Introduce the car brand:");
+                String brand = Reader.cinText();
+
+                System.out.println("Introduce the car model:");
+                String model = Reader.cinText();
+
+                System.out.println("Introduce the car plate:");
+                String carPlate = Reader.cinText();
+
+                CarRepository x = CarRepository.getInstance();
+                x.createTable();
+                x.insertCar(new Car(brand, model, carPlate));
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Created a new car in the SQL table!", true);
+            }
             else if(op == 10)
+            {
+                CarRepository x = CarRepository.getInstance();
+                x.createTable();
+                x.displayCar();
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Displayed the cars from the SQL table!", true);
+            }
+            else if(op == 11)
+            {
+                System.out.println("Introduce the new car model:");
+                String model = Reader.cinText();
+
+                System.out.println("Introduce the car plate:");
+                String carPlate = Reader.cinText();
+
+                CarRepository x = CarRepository.getInstance();
+                x.createTable();
+                x.updateCarModel(model, carPlate);
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Updated a car in the SQL table!", true);
+            }
+            else if(op == 12)
+            {
+                System.out.println("Introduce the car plate:");
+                String carPlate = Reader.cinText();
+
+                CarRepository x = CarRepository.getInstance();
+                x.createTable();
+                x.deleteCarByCarPlate(carPlate);
+
+                ServiceAudit.writeAudit(auditFilePath, timestamp + " Deleted a car in the SQL table!", true);
+            }
+            else if(op == 15)
             {
                 ServiceAudit.writeAudit(auditFilePath, timestamp + " Program terminated", true);
                 ServiceAudit.writeAudit(auditFilePath, "\n--------------------------------------\n-----------------END------------------\n--------------------------------------\n", false);
 
+                DatabaseConfiguration.closeDatabaseConnection();
                 break;
             }
             else

@@ -69,8 +69,8 @@ public class ServiceClients {
 
     public static List<Client> readClientsFromCSV() {
 
-        List<Client> auxClientList = CSVReader.read("src/com/company/data/client.csv", Client.class);
-        List<Car> auxCarList = CSVReader.read("src/com/company/data/car.csv", Car.class);
+        List<Client> auxClientList = CSVReader.read("src/main/java/com/company/data/client.csv", Client.class);
+        List<Car> auxCarList = CSVReader.read("src/main/java/com/company/data/car.csv", Car.class);
         for(int i = 0; i < auxClientList.size(); i ++)
             auxClientList.get(i).setCar(auxCarList.get(i));
         return auxClientList;
